@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:clima_flutter_weather_app/resources/geo_location.dart';
+import 'package:clima_flutter_weather_app/resources/networking.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -26,18 +26,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
     geo.getLocation();
     latitude = geo.latitude;
     longitude = geo.longitude;
-  }
-
-  Future<void> getData() async {
-    Response response = await get(
-      Uri.parse(
-        'https://api.open-meteo.com/v1/forecast?$latitude=52.52&$longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m',
-      ),
+    NetworkHelper networkHelper = NetworkHelper(
+      'https://api.open-meteo.com/v1/forecast?$latitude=52.52&$longitude=13.41&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m',
     );
-    String data = response.body;
-    var temperature = jsonDecode(data)['main']['temp'];
-    var condition = jsonDecode(data)['weather'][0]['id'];
-    var cityName = jsonDecode(data)['name'];
   }
 
   @override
@@ -48,7 +39,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
           onPressed: () {
             getLocations();
           },
-          child: Column(children: [Text('Get Location'), Text('jj')]),
+          child: Column(children: [Text('Get Location'), Text('')]),
         ),
       ),
     );
